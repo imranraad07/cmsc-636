@@ -1,4 +1,3 @@
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn import metrics
 from sklearn.feature_extraction.text import CountVectorizer
