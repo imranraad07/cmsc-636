@@ -1,7 +1,5 @@
-from sklearn.ensemble import BaggingClassifier
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
-from sklearn import metrics
+from sklearn import metrics, tree
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
@@ -37,13 +35,12 @@ X_test = [txt.text_cleaner(' '.join(index_word.get(w) for w in x)) for x in X_te
 X_train = np.array(X_train)
 X_train = np.array(X_train).ravel()
 print(X_train.shape)
-
 X_test = np.array(X_test)
 X_test = np.array(X_test).ravel()
 
 text_clf = Pipeline([('vect', CountVectorizer()),
                      ('tfidf', TfidfTransformer()),
-                     ('clf', BaggingClassifier(KNeighborsClassifier())),
+                     ('clf', tree.DecisionTreeClassifier()),
                      ])
 
 text_clf.fit(X_train, y_train)
