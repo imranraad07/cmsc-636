@@ -29,6 +29,7 @@ import numpy as np
 
 # working
 from keras.datasets import imdb
+
 # this depends on machine computation capacity
 MAX_NB_WORDS = 75000
 
@@ -126,15 +127,16 @@ class SimpleDNN(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
         super(SimpleDNN, self).__init__()
         self.layer_1 = nn.Linear(input_size, hidden_size, bias=True)
-        self.relu = nn.ReLU()
+        self.relu_1 = nn.ReLU()
         self.layer_2 = nn.Linear(hidden_size, hidden_size, bias=True)
+        self.relu_2 = nn.ReLU()
         self.output_layer = nn.Linear(hidden_size, num_classes, bias=True)
 
     def forward(self, x):
         out = self.layer_1(x)
-        out = self.relu(out)
+        out = self.relu_1(out)
         out = self.layer_2(out)
-        out = self.relu(out)
+        out = self.relu_2(out)
         out = self.output_layer(out)
         return out
 
@@ -146,6 +148,8 @@ output = loss(input, target)
 output.backward()
 
 net = SimpleDNN(input_size, hidden_size, num_classes)
+
+print(net)
 
 # Loss and Optimizer
 criterion = nn.CrossEntropyLoss()

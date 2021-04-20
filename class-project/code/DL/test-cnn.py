@@ -56,7 +56,8 @@ class CNN(nn.Module):
                       kernel_size=(fs, embedding_dim))
             for fs in filter_sizes
         ])
-        self.fc = nn.Linear(len(filter_sizes) * n_filters, output_dim)
+        self.fc1 = nn.Linear(len(filter_sizes) * n_filters, 100)
+        self.fc2 = nn.Linear(100, output_dim)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, text):
@@ -65,7 +66,9 @@ class CNN(nn.Module):
         conved = [F.relu(conv(embedded)).squeeze(3) for conv in self.convs]
         pooled = [F.max_pool1d(conv, conv.shape[2]).squeeze(2) for conv in conved]
         cat = self.dropout(torch.cat(pooled, dim=1))
-        return self.fc(cat)
+        fc1 = self.fc1(cat)
+        fc2 = self.fc2(fc1)
+        return fc2
 
 
 INPUT_DIM = len(TEXT.vocab)
@@ -84,6 +87,9 @@ def count_parameters(model):
 
 
 print(f'The model has {count_parameters(model):,} trainable parameters')
+
+print(model)
+
 
 pretrained_embeddings = TEXT.vocab.vectors
 
